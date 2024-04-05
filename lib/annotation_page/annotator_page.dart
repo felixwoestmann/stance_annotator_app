@@ -1,44 +1,50 @@
 import 'package:annotator_app/colors.dart';
 import 'package:annotator_app/data/submission.dart';
+import 'package:annotator_app/persistence_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'comment_view.dart';
 import 'left_siderbar.dart';
 
-class AnnotatorPage extends ConsumerStatefulWidget {
-  final Submission submission;
+class AnnotatorPage extends ConsumerWidget {
 
-  const AnnotatorPage({super.key, required this.submission});
 
   @override
-  ConsumerState<AnnotatorPage> createState() => _OverviewPageState();
-}
+  Widget build(BuildContext context,WidgetRef ref) {
+    final submission = ref.watch(persistenceProvider).loadData();
 
-class _OverviewPageState extends ConsumerState<AnnotatorPage> {
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Annotate",style: TextStyle(color: pureWhite),),
+        title: const Text(
+          "Annotate",
+          style: TextStyle(color: pureWhite),
+        ),
         backgroundColor: softBlack,
         foregroundColor: pureWhite,
       ),
       body: Column(
         children: [
-          const SizedBox(height: 8,),
+          const SizedBox(
+            height: 8,
+          ),
           Expanded(
             child: Row(
               children: [
-                Flexible(flex:1,child: LeftSidebar(submission: widget.submission)),
-                const VerticalDivider(color: softBlack,),
                 Flexible(
-                  flex: 3,
-                    child: CommentView(comments: widget.submission.branches)),
+                    flex: 1, child: LeftSidebar(submission: submission)),
+                const VerticalDivider(
+                  color: softBlack,
+                ),
+                Flexible(
+                    flex: 3,
+                    child: CommentView(comments: submission.branches)),
               ],
             ),
           ),
-          const Divider(color: softBlack,),
+          const Divider(
+            color: softBlack,
+          ),
           const LinearProgressIndicator(
             value: 0.3,
             minHeight: 20,
@@ -51,4 +57,3 @@ class _OverviewPageState extends ConsumerState<AnnotatorPage> {
     );
   }
 }
-

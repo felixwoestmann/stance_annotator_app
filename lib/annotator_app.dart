@@ -1,4 +1,3 @@
-
 import 'package:annotator_app/persistence_provider.dart';
 import 'package:annotator_app/upload_page.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +12,6 @@ class AnnotatorApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final submission = ref.watch(persistenceProvider).loadData();
     return MaterialApp(
       title: 'Annotator App',
       debugShowCheckedModeBanner: false,
@@ -21,10 +19,9 @@ class AnnotatorApp extends ConsumerWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
         useMaterial3: true,
       ),
-      home: submission != null
-          ? AnnotatorPage(submission: submission)
+      home: ref.watch(persistenceProvider).hasData
+          ? AnnotatorPage()
           : const UploadSubmissionPage(),
     );
   }
 }
-

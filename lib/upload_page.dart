@@ -39,7 +39,8 @@ class UploadSubmissionPage extends ConsumerWidget {
                     builder: (_) => AnnotatorPage(submission: submission)));
               } else {
                 await showDialog(
-                    context: context, builder: (_) => const Text("Error occured"));
+                    context: context,
+                    builder: (_) => const Text("Error occured"));
               }
             },
             child: const Text('Pick JSON file')),

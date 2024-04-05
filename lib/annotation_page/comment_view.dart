@@ -65,17 +65,38 @@ class BranchDisplay extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Expanded(
+              Flexible(
+                flex: 6,
                 child: Text(
                   comment.body,
                   style: GoogleFonts.roboto(fontSize: 18, color: pureBlack),
                 ),
               ),
-              VerticalDivider(),
-              Flexible(child: _StanceAnnotationButton(comment: comment)),
+              Flexible(
+                  flex: 3,
+                  child: Column(
+                    children: [
+                      const Text(
+                        'Comments stance on the topic: ',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w600),
+                      ),
+                      _StanceAnnotationButton(comment: comment),
+                      if (!comment.isTopLevel) ...[
+                        const SizedBox(height: 8),
+                        const Text(
+                          'Comments stance on the parent: ',
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w600),
+                        ),
+                        _StanceAnnotationButton(comment: comment)
+                      ],
+                    ],
+                  )),
             ],
           ),
         ),
@@ -95,7 +116,7 @@ class _StanceAnnotationButton extends StatefulWidget {
 }
 
 class _StanceAnnotationButtonState extends State<_StanceAnnotationButton> {
-  late  Set<StanceLabel> _selected;
+  late Set<StanceLabel> _selected;
 
   @override
   void initState() {
@@ -122,11 +143,10 @@ class _StanceAnnotationButtonState extends State<_StanceAnnotationButton> {
       showSelectedIcon: false,
       selected: _selected,
       onSelectionChanged: (nowSelectedLabels) {
-       setState(() {
-         _selected = nowSelectedLabels;
-       });
+        setState(() {
+          _selected = nowSelectedLabels;
+        });
         //final optionalSelection = nowSelectedLabels.singleOrNull;
-
       },
     );
   }

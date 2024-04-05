@@ -10,6 +10,6 @@ class CommentSet with _$CommentSet {
     required List<Comment> comments,
   }) = _CommentSet;
 
-  factory CommentSet.fromJson(Map<String, Object?> json)
-  => _$CommentSetFromJson(json);
+  factory CommentSet.fromJson(Map<String, Object?> json) =>
+      _$CommentSetFromJson(json);
 }

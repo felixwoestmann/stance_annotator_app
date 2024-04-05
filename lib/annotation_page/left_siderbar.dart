@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -16,7 +15,9 @@ class LeftSidebar extends StatelessWidget {
     return Column(
       children: [
         const Expanded(flex: 3, child: _Instructions()),
-        const Divider(color: softBlack,),
+        const Divider(
+          color: softBlack,
+        ),
         Expanded(flex: 7, child: _SubmissionInfo(submission: submission)),
       ],
     );
@@ -34,7 +35,8 @@ class _Instructions extends StatelessWidget {
         children: [
           Text(
             "Instructions",
-            style: GoogleFonts.roboto(fontSize: 24, fontWeight: FontWeight.bold),
+            style:
+                GoogleFonts.roboto(fontSize: 24, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
           Text(
@@ -65,14 +67,16 @@ class _SubmissionInfo extends StatelessWidget {
             Text(
               submission.author,
               style:
-              GoogleFonts.roboto(fontSize: 16, color: Colors.grey.shade600),
+                  GoogleFonts.roboto(fontSize: 16, color: Colors.grey.shade600),
             ),
             Text(
               submission.title,
               style:
-              GoogleFonts.roboto(fontWeight: FontWeight.bold, fontSize: 24),
+                  GoogleFonts.roboto(fontWeight: FontWeight.bold, fontSize: 24),
             ),
-            const SizedBox(height: 8,),
+            const SizedBox(
+              height: 8,
+            ),
             Flexible(
               child: FilledButton(
                   onPressed: () {
