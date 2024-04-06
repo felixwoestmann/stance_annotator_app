@@ -1,6 +1,5 @@
 import 'package:annotator_app/colors.dart';
-import 'package:annotator_app/data/submission.dart';
-import 'package:annotator_app/persistence_provider.dart';
+import 'package:annotator_app/submission_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -8,11 +7,11 @@ import 'comment_view.dart';
 import 'left_siderbar.dart';
 
 class AnnotatorPage extends ConsumerWidget {
-
+  const AnnotatorPage({super.key});
 
   @override
-  Widget build(BuildContext context,WidgetRef ref) {
-    final submission = ref.watch(persistenceProvider).loadData();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final submission = ref.watch(submissionProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -20,6 +19,14 @@ class AnnotatorPage extends ConsumerWidget {
           "Annotate",
           style: TextStyle(color: pureWhite),
         ),
+        actions: [
+          FilledButton(
+              onPressed: () {
+                final sets=ref.read(submissionProvider.notifier).generateCommentSets();
+                print(sets.length);
+              },
+              child: Text('CommentSets'))
+        ],
         backgroundColor: softBlack,
         foregroundColor: pureWhite,
       ),
@@ -31,14 +38,15 @@ class AnnotatorPage extends ConsumerWidget {
           Expanded(
             child: Row(
               children: [
-                Flexible(
-                    flex: 1, child: LeftSidebar(submission: submission)),
+                Flexible(flex: 1, child: LeftSidebar(submission: submission)),
                 const VerticalDivider(
                   color: softBlack,
                 ),
                 Flexible(
                     flex: 3,
-                    child: CommentView(comments: submission.branches)),
+                    child: CommentView(
+                        key: ObjectKey(submission),
+                        comments: submission.branches)),
               ],
             ),
           ),

@@ -1,9 +1,9 @@
 import 'package:annotator_app/colors.dart';
 import 'package:annotator_app/data/stance_label.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:annotator_app/submission_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../data/comment.dart';
@@ -85,7 +85,8 @@ class BranchDisplay extends StatelessWidget {
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w600),
                       ),
-                      _StanceAnnotationButton(comment: comment),
+                      _StanceAnnotationButton(
+                          comment: comment, type: StanceAnnotationType.source),
                       if (!comment.isTopLevel) ...[
                         const SizedBox(height: 8),
                         const Text(
@@ -93,7 +94,8 @@ class BranchDisplay extends StatelessWidget {
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.w600),
                         ),
-                        _StanceAnnotationButton(comment: comment)
+                        _StanceAnnotationButton(
+                            comment: comment, type: StanceAnnotationType.parent)
                       ],
                     ],
                   )),
@@ -105,29 +107,14 @@ class BranchDisplay extends StatelessWidget {
   }
 }
 
-class _StanceAnnotationButton extends StatefulWidget {
+class _StanceAnnotationButton extends ConsumerWidget {
   final Comment comment;
+  final StanceAnnotationType type;
 
-  const _StanceAnnotationButton({super.key, required this.comment});
-
-  @override
-  State<_StanceAnnotationButton> createState() =>
-      _StanceAnnotationButtonState();
-}
-
-class _StanceAnnotationButtonState extends State<_StanceAnnotationButton> {
-  late Set<StanceLabel> _selected;
+  const _StanceAnnotationButton({required this.comment, required this.type});
 
   @override
-  void initState() {
-    super.initState();
-    _selected = widget.comment.stanceOnParent == null
-        ? {}
-        : {widget.comment.stanceOnParent!};
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return SegmentedButton(
       emptySelectionAllowed: true,
       multiSelectionEnabled: false,
@@ -141,13 +128,21 @@ class _StanceAnnotationButtonState extends State<_StanceAnnotationButton> {
             value: StanceLabel.neither, label: Text(StanceLabel.neither.value)),
       ],
       showSelectedIcon: false,
-      selected: _selected,
-      onSelectionChanged: (nowSelectedLabels) {
-        setState(() {
-          _selected = nowSelectedLabels;
-        });
-        //final optionalSelection = nowSelectedLabels.singleOrNull;
+      selected: type == StanceAnnotationType.source
+          ? comment.stanceOnSubmission.toSet
+          : comment.stanceOnParent.toSet,
+      onSelectionChanged: (nowSelectedLabels) async {
+        await ref.read(submissionProvider.notifier).updateCommentStance(
+            commentId: comment.id,
+            stanceLabel: nowSelectedLabels.first,
+            stanceAnnotationType: type);
       },
     );
   }
+}
+
+enum StanceAnnotationType { source, parent }
+
+extension on StanceLabel? {
+  Set<StanceLabel> get toSet => this == null ? {} : {this!};
 }

@@ -1,4 +1,5 @@
-import 'package:annotator_app/persistence_provider.dart';
+import 'package:annotator_app/shared_preferences_extension.dart';
+import 'package:annotator_app/submission_provider.dart';
 import 'package:annotator_app/upload_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -19,8 +20,8 @@ class AnnotatorApp extends ConsumerWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
         useMaterial3: true,
       ),
-      home: ref.watch(persistenceProvider).hasData
-          ? AnnotatorPage()
+      home: ref.watch(sharedPreferencesProvider).hasData
+          ? const AnnotatorPage()
           : const UploadSubmissionPage(),
     );
   }
