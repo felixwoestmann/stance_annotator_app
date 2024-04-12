@@ -20,7 +20,7 @@ class AnnotatorApp extends ConsumerWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
         useMaterial3: true,
       ),
-      home: ref.watch(sharedPreferencesProvider).hasData
+      home: ref.watch(sharedPreferencesProvider).hasSubmissionData
           ? const AnnotatorPage()
           : const UploadSubmissionPage(),
     );

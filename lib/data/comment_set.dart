@@ -1,9 +1,10 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'comment.dart';
+
 part 'comment_set.freezed.dart';
 
-
+part 'comment_set.g.dart';
 
 /// According to Zubianga 2015a
 /// If the Tweet is the source Tweet only it is shown.
@@ -18,11 +19,21 @@ sealed class CommentSet with _$CommentSet {
   const CommentSet._();
 
 
+  bool get isAnnotated {
+    if (this is TopLevelComment) {
+      return comment.stanceOnSubmission != null;
+    } else {
+      return comment.stanceOnSubmission != null &&
+          (this as SubsequentComment).parent.stanceOnSubmission != null;
+    }
+  }
+
   const factory CommentSet.topLevel({required Comment comment}) =
-  TopLevelComment;
+      TopLevelComment;
 
-  const factory CommentSet.subsequent({required Comment comment, required Comment parent}) =
-  SubsequentComment;
+  const factory CommentSet.subsequent(
+      {required Comment comment, required Comment parent}) = SubsequentComment;
+
+  factory CommentSet.fromJson(Map<String, dynamic> json) =>
+      _$CommentSetFromJson(json);
 }
-
-
