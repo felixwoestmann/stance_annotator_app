@@ -1,6 +1,6 @@
 import 'package:annotator_app/colors.dart';
+import 'package:annotator_app/data/comment_set.dart';
 import 'package:annotator_app/data/stance_label.dart';
-import 'package:annotator_app/submission_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,23 +9,22 @@ import 'package:google_fonts/google_fonts.dart';
 import '../data/comment.dart';
 
 class CommentView extends StatefulWidget {
-  final List<Comment> comments;
+  final List<CommentSet> commentSets;
 
-  const CommentView({super.key, required this.comments});
+  const CommentView({super.key, required this.commentSets});
 
   @override
   State<CommentView> createState() => _CommentViewState();
 }
 
 class _CommentViewState extends State<CommentView> {
-  late final TreeController<Comment> _controller;
 
   @override
   void initState() {
     super.initState();
     _controller = TreeController<Comment>(
       childrenProvider: (comment) => comment.branches,
-      roots: widget.comments,
+      roots: widget.commentSets.,
     )..expandAll();
   }
 

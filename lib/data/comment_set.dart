@@ -18,7 +18,6 @@ part 'comment_set.g.dart';
 sealed class CommentSet with _$CommentSet {
   const CommentSet._();
 
-
   bool get isAnnotated {
     if (this is TopLevelComment) {
       return comment.stanceOnSubmission != null;
