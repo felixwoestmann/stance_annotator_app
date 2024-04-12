@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:annotator_app/shared_preferences_extension.dart';
+import 'package:annotator_app/submission_repository.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,11 +12,10 @@ import 'annotation_page/annotator_page.dart';
 import 'data/submission.dart';
 
 class UploadSubmissionPage extends ConsumerWidget {
-  const UploadSubmissionPage({
-    super.key,
-  });
+  const UploadSubmissionPage({super.key});
 
-  Future<void> _onSubmissionButtonPressed(BuildContext context) async {
+  Future<void> _onSubmissionButtonPressed(
+      BuildContext context, WidgetRef ref) async {
     final navigator = Navigator.of(context);
 
     FilePickerResult? result = await FilePicker.platform
@@ -31,7 +31,7 @@ class UploadSubmissionPage extends ConsumerWidget {
         branch.isTopLevel = true;
       }
 
-      await GetIt.instance.get<SharedPreferences>().saveSubmission(submission);
+      ref.read(submissionRepositoryProvider).submission = submission;
 
       navigator.push(MaterialPageRoute(builder: (_) => const AnnotatorPage()));
     } else {
@@ -52,7 +52,7 @@ class UploadSubmissionPage extends ConsumerWidget {
       ),
       body: Center(
         child: FilledButton(
-            onPressed: () => _onSubmissionButtonPressed(context),
+            onPressed: () => _onSubmissionButtonPressed(context, ref),
             child: const Text('Pick JSON file')),
       ),
       // This trailing comma makes auto-formatting nicer for build methods.

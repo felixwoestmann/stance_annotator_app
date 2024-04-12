@@ -14,7 +14,7 @@ class LeftSidebar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Expanded(flex: 3, child: _Instructions()),
+        const Expanded(flex: 3, child: SingleChildScrollView(child: _Instructions())),
         const Divider(
           color: softBlack,
         ),
@@ -56,43 +56,41 @@ class _SubmissionInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ColoredBox(
-      color: Colors.white,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 24),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              submission.author,
-              style:
-                  GoogleFonts.roboto(fontSize: 16, color: Colors.grey.shade600),
-            ),
-            Text(
-              submission.title,
-              style:
-                  GoogleFonts.roboto(fontWeight: FontWeight.bold, fontSize: 24),
-            ),
-            const SizedBox(
-              height: 8,
-            ),
-            Flexible(
-              child: FilledButton(
-                  onPressed: () {
-                    launchUrl(Uri.parse(submission.url));
-                  },
-                  child: const Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.open_in_browser),
-                      Text("Open Article"),
-                    ],
-                  )),
-            ),
-          ],
-        ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 24),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            submission.author,
+            style:
+                GoogleFonts.roboto(fontSize: 16, color: Colors.grey.shade600),
+          ),
+          Text(
+            submission.title,
+            style:
+                GoogleFonts.roboto(fontWeight: FontWeight.bold, fontSize: 24),
+          ),
+          const SizedBox(
+            height: 8,
+          ),
+          Flexible(
+            child: ElevatedButton(
+                onPressed: () {
+                  launchUrl(Uri.parse(submission.url));
+                },
+                child: const Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.open_in_browser),
+                    const SizedBox(width: 8, height: 25),
+                    Text("Open Article"),
+                  ],
+                )),
+          ),
+        ],
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:annotator_app/shared_preferences_extension.dart';
+import 'package:annotator_app/submission_repository.dart';
 import 'package:annotator_app/upload_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,12 +9,20 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'annotation_page/annotator_page.dart';
 
 class AnnotatorApp extends ConsumerWidget {
-  const AnnotatorApp({
-    super.key,
-  });
+  const AnnotatorApp({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final prefs = GetIt.instance.get<SharedPreferences>();
+    Widget home;
+    if (prefs.hasSubmissionData) {
+      final submission = prefs.loadSubmission();
+      ref.read(submissionRepositoryProvider).submission = submission;
+      home = const AnnotatorPage();
+    } else {
+      home = const UploadSubmissionPage();
+    }
+
     return MaterialApp(
       title: 'Annotator App',
       debugShowCheckedModeBanner: false,
@@ -21,9 +30,7 @@ class AnnotatorApp extends ConsumerWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
         useMaterial3: true,
       ),
-      home: GetIt.instance.get<SharedPreferences>().hasSubmissionData
-          ? const AnnotatorPage()
-          : const UploadSubmissionPage(),
+      home: home,
     );
   }
 }

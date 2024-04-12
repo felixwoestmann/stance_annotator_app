@@ -34,31 +34,31 @@ class AnnotatorPage extends ConsumerWidget {
       ),
       body: Column(
         children: [
-          const SizedBox(
-            height: 8,
-          ),
-          Expanded(
-            child: Row(
-              children: [
-                Flexible(
-                    flex: 1, child: LeftSidebar(submission: state.submission)),
-                const VerticalDivider(
-                  color: softBlack,
-                ),
-                Flexible(
-                    flex: 3,
-                    child: CommentView(
-                      key: ObjectKey(state),
-                      commentSets: current,
-                    )),
-              ],
+        const SizedBox(
+        height: 8,
+      ),
+      Expanded(
+        child: Row(
+          children: [
+            Flexible(
+                flex: 1, child: LeftSidebar(submission: state.submission)),
+            const VerticalDivider(
+              color: softBlack,
             ),
-          ),
-          const Divider(
-            color: softBlack,
-            height: 1,
-          ),
-          _ProgressIndicator(state),
+            Flexible(
+                flex: 3,
+                child: CommentView(
+                  key: ObjectKey(state),
+                  commentSets: current,
+                )),
+            SizedBox(width: 8),
+          ],
+        ),),
+        const Divider(
+          color: softBlack,
+          height: 1,
+        ),
+        _ProgressIndicator(state),
         ],
       ),
     );
@@ -81,3 +81,4 @@ class _ProgressIndicator extends ConsumerWidget {
     );
   }
 }
+
