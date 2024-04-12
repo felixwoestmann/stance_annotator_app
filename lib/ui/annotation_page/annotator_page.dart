@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:annotator_app/colors.dart';
 import 'package:annotator_app/ui/annotation_page/annotator_page_provider.dart';
 import 'package:annotator_app/data/annotator_page_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'comment_view.dart';
 import 'left_siderbar.dart';
@@ -24,6 +27,21 @@ class AnnotatorPage extends ConsumerWidget {
         ),
         automaticallyImplyLeading: false,
         actions: [
+          FilledButton(
+              onPressed: () {
+                final submissionAsJsonString =
+                    jsonEncode(state.submission.toJson());
+                launchUrl(Uri.parse(
+                    "data:application/octet-stream;base64,${base64Encode(utf8.encode(submissionAsJsonString))}"));
+              },
+              child: const Row(
+                children: [
+                  Text('Export'),
+                  SizedBox(width: 8),
+                  Icon(Icons.download),
+                ],
+              )),
+          const SizedBox(width: 16),
           Text('${notifier.currentPage} / ${notifier.totalPageCount}'),
           const SizedBox(width: 16),
           FilledButton(

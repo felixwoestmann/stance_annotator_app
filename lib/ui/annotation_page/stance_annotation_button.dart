@@ -70,12 +70,14 @@ class _StanceAnnotationButtonState
       multiSelectionEnabled: false,
       segments: [
         ButtonSegment(
-            value: StanceLabel.agrees, label: Text(StanceLabel.agrees.value)),
+            value: StanceLabel.agrees,
+            label: Text(StanceLabel.agrees.toDisplayString())),
         ButtonSegment(
             value: StanceLabel.disagrees,
-            label: Text(StanceLabel.disagrees.value)),
+            label: Text(StanceLabel.disagrees.toDisplayString())),
         ButtonSegment(
-            value: StanceLabel.neither, label: Text(StanceLabel.neither.value)),
+            value: StanceLabel.neither,
+            label: Text(StanceLabel.neither.toDisplayString())),
       ],
       selected: selected,
       showSelectedIcon: false,

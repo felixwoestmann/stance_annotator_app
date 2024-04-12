@@ -20,7 +20,8 @@ class UploadSubmissionPage extends ConsumerWidget {
 
     if (result != null) {
       final bytes = result.files.single.bytes;
-      final jsonString = String.fromCharCodes(bytes!);
+
+      final jsonString = utf8.decode(bytes!);
       final submission = Submission.fromJson(json.decode(jsonString));
 
       // This function shall set the isTopLevel for each comment
