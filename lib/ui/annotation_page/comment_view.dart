@@ -6,17 +6,25 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../data/comment.dart';
 
-class CommentView extends StatelessWidget {
+class CommentView extends StatefulWidget {
   final List<CommentSet> commentSets;
 
   const CommentView({super.key, required this.commentSets});
 
   @override
+  State<CommentView> createState() => _CommentViewState();
+}
+
+class _CommentViewState extends State<CommentView> {
+  ScrollController _scrollController = ScrollController();
+
+  @override
   Widget build(BuildContext context) {
     return ListView.separated(
-      itemCount: commentSets.length,
+      controller: _scrollController,
+      itemCount: widget.commentSets.length,
       itemBuilder: (context, index) {
-        final commentSet = commentSets[index];
+        final commentSet = widget.commentSets[index];
         return switch (commentSet) {
           TopLevelComment topCommentSet =>
             TopLevelCommentView(comment: topCommentSet.comment),
@@ -111,7 +119,9 @@ class CommentDisplay extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 8),
-              if (toBeAnnotated) StanceAnnotationControls(key: ValueKey(comment.id), comment: comment),
+              if (toBeAnnotated)
+                StanceAnnotationControls(
+                    key: ValueKey(comment.id), comment: comment),
             ],
           ),
         ),

@@ -27,6 +27,11 @@ sealed class CommentSet with _$CommentSet {
     }
   }
 
+  Comment get comment => when(
+        topLevel: (comment) => comment,
+        subsequent: (comment, _) => comment,
+      );
+
   const factory CommentSet.topLevel({required Comment comment}) =
       TopLevelComment;
 

@@ -48,10 +48,31 @@ class UploadSubmissionPage extends ConsumerWidget {
           style: Theme.of(context).textTheme.titleLarge,
         ),
       ),
-      body: Center(
-        child: FilledButton(
-            onPressed: () => _onSubmissionButtonPressed(context, ref),
-            child: const Text('Pick JSON file')),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 40.0),
+            child: Text(
+              "This app is used to stance annotate comments of Reddits posts. "
+              "To start upload a JSON file containing a Reddit submission",
+              style: TextStyle(fontSize: 16),
+            ),
+          ),
+          const SizedBox(height: 16),
+          Center(
+            child: FilledButton(
+                onPressed: () => _onSubmissionButtonPressed(context, ref),
+                child: const Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.upload_file),
+                    SizedBox(width: 8),
+                    Text('Pick JSON file'),
+                  ],
+                )),
+          ),
+        ],
       ),
       // This trailing comma makes auto-formatting nicer for build methods.
     );

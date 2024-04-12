@@ -7,15 +7,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'comment_view.dart';
 import 'left_siderbar.dart';
 
-const setsPerPage = 3;
-
 class AnnotatorPage extends ConsumerWidget {
   const AnnotatorPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(annotatorPageProvider);
-    final current = state.unannotatedComments.take(setsPerPage).toList();
+    final notifier = ref.watch(annotatorPageProvider.notifier);
+    final current = notifier.current;
 
     return Scaffold(
       appBar: AppBar(
@@ -23,12 +22,21 @@ class AnnotatorPage extends ConsumerWidget {
           "Annotation Page",
           style: TextStyle(color: pureWhite),
         ),
+        automaticallyImplyLeading: false,
         actions: [
-          Text('${state.annotationCount} / ${state.length}'),
+          Text('${notifier.currentPage} / ${notifier.totalPageCount}'),
           const SizedBox(width: 16),
-          FilledButton(onPressed: () {
-            ref.read(annotatorPageProvider.notifier).flushCache();
-          }, child: const Text('Next ->')),
+          FilledButton(
+              onPressed: notifier.isPageCompletelyAnnotated
+                  ? notifier.flushCache
+                  : null,
+              child: const Row(
+                children: [
+                  Text('Save and Next'),
+                  SizedBox(width: 8),
+                  Icon(Icons.arrow_forward),
+                ],
+              )),
           const SizedBox(width: 16),
         ],
         backgroundColor: softBlack,
@@ -47,12 +55,7 @@ class AnnotatorPage extends ConsumerWidget {
                 const VerticalDivider(
                   color: softBlack,
                 ),
-                Flexible(
-                    flex: 3,
-                    child: CommentView(
-                      key: ObjectKey(state),
-                      commentSets: current,
-                    )),
+                Flexible(flex: 3, child: CommentView(commentSets: current)),
                 const SizedBox(width: 8),
               ],
             ),

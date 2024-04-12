@@ -5,12 +5,15 @@ import 'package:annotator_app/data/comment.dart';
 import 'package:annotator_app/data/comment_set.dart';
 import 'package:annotator_app/submission_repository.dart';
 import 'package:annotator_app/tree_helper.dart';
+import 'package:annotator_app/ui/annotation_page/stance_annotation_button.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../data/stance_label.dart';
 import '../../data/submission.dart';
 import '../../data/tree_interface.dart';
+
+const setsPerPage = 3;
 
 final annotatorPageProvider =
     NotifierProvider.autoDispose<AnnotatorPageProvider, AnnotatorPageState>(
@@ -45,6 +48,37 @@ class AnnotatorPageProvider extends AutoDisposeNotifier<AnnotatorPageState> {
 
   int get annotationCount => state.annotationCount;
 
+  int get totalPageCount => (state.length / setsPerPage).ceil();
+
+  int get currentPage => (state.annotationCount / setsPerPage).ceil();
+
+  List<CommentSet> get current {
+    return state.unannotatedComments.take(setsPerPage).toList();
+  }
+
+  bool get isPageCompletelyAnnotated {
+    for (final commentSet in current) {
+      final commentId = commentSet.comment.id;
+
+      if (!state.updateCommentJobs.containsKey((
+        commentId: commentId,
+        stanceAnnotationType: StanceAnnotationType.source
+      ))) {
+        return false;
+      }
+
+      if (commentSet is SubsequentComment &&
+          !state.updateCommentJobs.containsKey((
+            commentId: commentId,
+            stanceAnnotationType: StanceAnnotationType.parent
+          ))) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
   void addToCache({required CommentStanceKey key, required StanceLabel label}) {
     print('Adding job for ${key.commentId} to cache');
 
@@ -54,8 +88,7 @@ class AnnotatorPageProvider extends AutoDisposeNotifier<AnnotatorPageState> {
   }
 
   void flushCache() {
-    _submissionRepository
-        .updateCommentStances(state.updateCommentJobs);
+    _submissionRepository.updateCommentStances(state.updateCommentJobs);
     state = state.copyWith(updateCommentJobs: {});
   }
 

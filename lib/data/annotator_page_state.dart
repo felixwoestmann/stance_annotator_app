@@ -15,8 +15,11 @@ class AnnotatorPageState with _$AnnotatorPageState {
     required final Submission submission,
     required final List<CommentSet> annotatedComments,
     required final List<CommentSet> unannotatedComments,
-    @Default({})  final Map<CommentStanceKey,StanceLabel> updateCommentJobs,
+    @Default({}) final Map<CommentStanceKey, StanceLabel> updateCommentJobs,
   }) = _AnnotatorPageState;
 }
 
-typedef CommentStanceKey = ({String commentId, StanceAnnotationType stanceAnnotationType});
+typedef CommentStanceKey = ({
+  String commentId,
+  StanceAnnotationType stanceAnnotationType
+});

@@ -40,7 +40,7 @@ class _StanceAnnotationButton extends ConsumerStatefulWidget {
   final StanceAnnotationType type;
 
   const _StanceAnnotationButton(
-      {required this.comment, required this.type});
+      {required this.comment, required this.type, super.key});
 
   @override
   ConsumerState<_StanceAnnotationButton> createState() =>
@@ -89,6 +89,7 @@ class _StanceAnnotationButtonState
             ),
             label: nowSelectedLabels.single,
           );
+          selected = nowSelectedLabels.single.toSet;
         });
       },
     );
