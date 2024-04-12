@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../colors.dart';
-import '../data/submission.dart';
+import '../../colors.dart';
+import '../../data/submission.dart';
 
 class LeftSidebar extends StatelessWidget {
   const LeftSidebar({super.key, required this.submission});
@@ -85,7 +85,7 @@ class _SubmissionInfo extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(Icons.open_in_browser),
-                    const SizedBox(width: 8, height: 25),
+                    SizedBox(width: 8, height: 25),
                     Text("Open Article"),
                   ],
                 )),

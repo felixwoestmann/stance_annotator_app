@@ -1,15 +1,12 @@
 import 'dart:convert';
 
-import 'package:annotator_app/shared_preferences_extension.dart';
 import 'package:annotator_app/submission_repository.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get_it/get_it.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
+import '../data/submission.dart';
 import 'annotation_page/annotator_page.dart';
-import 'data/submission.dart';
 
 class UploadSubmissionPage extends ConsumerWidget {
   const UploadSubmissionPage({super.key});

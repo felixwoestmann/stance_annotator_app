@@ -1,5 +1,5 @@
 import 'package:annotator_app/colors.dart';
-import 'package:annotator_app/annotator_page_provider.dart';
+import 'package:annotator_app/ui/annotation_page/annotator_page_provider.dart';
 import 'package:annotator_app/data/annotator_page_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -51,7 +51,7 @@ class AnnotatorPage extends ConsumerWidget {
                   key: ObjectKey(state),
                   commentSets: current,
                 )),
-            SizedBox(width: 8),
+            const SizedBox(width: 8),
           ],
         ),),
         const Divider(

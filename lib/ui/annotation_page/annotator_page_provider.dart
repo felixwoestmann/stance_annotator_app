@@ -8,8 +8,8 @@ import 'package:annotator_app/tree_helper.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'data/submission.dart';
-import 'data/tree_interface.dart';
+import '../../data/submission.dart';
+import '../../data/tree_interface.dart';
 
 final annotatorPageProvider =
     NotifierProvider.autoDispose<AnnotatorPageProvider, AnnotatorPageState>(

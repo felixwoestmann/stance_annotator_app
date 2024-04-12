@@ -1,14 +1,10 @@
 import 'package:annotator_app/colors.dart';
 import 'package:annotator_app/data/comment_set.dart';
-import 'package:annotator_app/data/stance_label.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:annotator_app/ui/annotation_page/stance_annotation_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../data/comment.dart';
+import '../../data/comment.dart';
 
 class CommentView extends StatelessWidget {
   final List<CommentSet> commentSets;
@@ -30,9 +26,9 @@ class CommentView extends StatelessWidget {
         };
       },
       separatorBuilder: (BuildContext context, int index) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: const Divider(
+        return const Padding(
+          padding: EdgeInsets.symmetric(vertical: 8.0),
+          child: Divider(
             color: softBlack,
             height: 1,
           ),
@@ -68,10 +64,10 @@ class SubsequentCommentView extends StatelessWidget {
         IntrinsicHeight(
           child: Row(
             children: [
-              SizedBox(
+              const SizedBox(
                   width: 25,
                   height: double.infinity,
-                  child: const PaintedArrowToParent()),
+                  child: PaintedArrowToParent()),
               Expanded(child: CommentDisplay(comment: comment))
             ],
           ),
@@ -83,8 +79,13 @@ class SubsequentCommentView extends StatelessWidget {
 
 class CommentDisplay extends StatelessWidget {
   final Comment comment;
-final bool toBeAnnotated;
-  const CommentDisplay({super.key, required this.comment, this.toBeAnnotated=true,});
+  final bool toBeAnnotated;
+
+  const CommentDisplay({
+    super.key,
+    required this.comment,
+    this.toBeAnnotated = true,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +100,7 @@ final bool toBeAnnotated;
           padding: const EdgeInsets.all(8.0),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
+            mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Flexible(
@@ -109,75 +110,14 @@ final bool toBeAnnotated;
                   style: GoogleFonts.roboto(fontSize: 18, color: pureBlack),
                 ),
               ),
-              if (toBeAnnotated)
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Text(
-                    'Comments stance on the topic: ',
-                    style: TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.w600),
-                  ),
-                  _StanceAnnotationButton(
-                      comment: comment, type: StanceAnnotationType.source),
-                  if (!comment.isTopLevel) ...[
-                    const SizedBox(height: 8),
-                    const Text(
-                      'Comments stance on the parent: ',
-                      style: TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.w600),
-                    ),
-                    _StanceAnnotationButton(
-                        comment: comment, type: StanceAnnotationType.parent)
-                  ],
-                ],
-              ),
+              const SizedBox(width: 8),
+              if (toBeAnnotated) StanceAnnotationControls(comment: comment),
             ],
           ),
         ),
       ),
     );
   }
-}
-
-class _StanceAnnotationButton extends ConsumerWidget {
-  final Comment comment;
-  final StanceAnnotationType type;
-
-  const _StanceAnnotationButton({required this.comment, required this.type});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return SegmentedButton(
-      emptySelectionAllowed: true,
-      multiSelectionEnabled: false,
-      segments: [
-        ButtonSegment(
-            value: StanceLabel.agrees, label: Text(StanceLabel.agrees.value)),
-        ButtonSegment(
-            value: StanceLabel.disagrees,
-            label: Text(StanceLabel.disagrees.value)),
-        ButtonSegment(
-            value: StanceLabel.neither, label: Text(StanceLabel.neither.value)),
-      ],
-      showSelectedIcon: false,
-      selected: type == StanceAnnotationType.source
-          ? comment.stanceOnSubmission.toSet
-          : comment.stanceOnParent.toSet,
-      onSelectionChanged: (nowSelectedLabels) async {
-        // await ref.read(submissionProvider.notifier).updateCommentStance(
-        //     commentId: comment.id,
-        //     stanceLabel: nowSelectedLabels.first,
-        //     stanceAnnotationType: type);
-      },
-    );
-  }
-}
-
-enum StanceAnnotationType { source, parent }
-
-extension on StanceLabel? {
-  Set<StanceLabel> get toSet => this == null ? {} : {this!};
 }
 
 class PaintedArrowToParent extends StatelessWidget {
