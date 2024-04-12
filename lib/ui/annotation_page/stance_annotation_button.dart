@@ -1,3 +1,4 @@
+import 'package:annotator_app/ui/annotation_page/annotator_page_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -38,7 +39,8 @@ class _StanceAnnotationButton extends ConsumerStatefulWidget {
   final Comment comment;
   final StanceAnnotationType type;
 
-  const _StanceAnnotationButton({required this.comment, required this.type});
+  const _StanceAnnotationButton(
+      {required this.comment, required this.type});
 
   @override
   ConsumerState<_StanceAnnotationButton> createState() =>
@@ -48,6 +50,18 @@ class _StanceAnnotationButton extends ConsumerStatefulWidget {
 class _StanceAnnotationButtonState
     extends ConsumerState<_StanceAnnotationButton> {
   Set<StanceLabel> selected = {};
+
+  @override
+  void initState() {
+    super.initState();
+    final stanceLabelPresent = ref
+        .read(annotatorPageProvider.notifier)
+        .getJobForCommentStanceKey(
+            (commentId: widget.comment.id, stanceAnnotationType: widget.type));
+    if (stanceLabelPresent != null) {
+      selected = stanceLabelPresent.toSet;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,8 +80,15 @@ class _StanceAnnotationButtonState
       selected: selected,
       showSelectedIcon: false,
       onSelectionChanged: (nowSelectedLabels) async {
+        print('Was: $selected, now: $nowSelectedLabels');
         setState(() {
-          selected = nowSelectedLabels;
+          ref.read(annotatorPageProvider.notifier).addToCache(
+            key: (
+              commentId: widget.comment.id,
+              stanceAnnotationType: widget.type
+            ),
+            label: nowSelectedLabels.single,
+          );
         });
       },
     );

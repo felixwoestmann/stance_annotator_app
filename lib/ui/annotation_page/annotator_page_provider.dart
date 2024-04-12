@@ -8,6 +8,7 @@ import 'package:annotator_app/tree_helper.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../data/stance_label.dart';
 import '../../data/submission.dart';
 import '../../data/tree_interface.dart';
 
@@ -38,10 +39,29 @@ class AnnotatorPageProvider extends AutoDisposeNotifier<AnnotatorPageState> {
   late final SubmissionRepository _submissionRepository;
 
   void _onSubmissionChange(Submission? submission) {
+    print('Updating state with new submission');
     state = AnnotationPageStateExtension.fromSubmission(submission!);
   }
 
   int get annotationCount => state.annotationCount;
+
+  void addToCache({required CommentStanceKey key, required StanceLabel label}) {
+    print('Adding job for ${key.commentId} to cache');
+
+    final mapCopy = Map.of(state.updateCommentJobs);
+    mapCopy.update(key, (value) => label, ifAbsent: () => label);
+    state = state.copyWith(updateCommentJobs: mapCopy);
+  }
+
+  void flushCache() {
+    _submissionRepository
+        .updateCommentStances(state.updateCommentJobs);
+    state = state.copyWith(updateCommentJobs: {});
+  }
+
+  StanceLabel? getJobForCommentStanceKey(CommentStanceKey key) {
+    return state.updateCommentJobs[key];
+  }
 }
 
 extension on Submission {

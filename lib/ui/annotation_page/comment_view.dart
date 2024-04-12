@@ -111,7 +111,7 @@ class CommentDisplay extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 8),
-              if (toBeAnnotated) StanceAnnotationControls(comment: comment),
+              if (toBeAnnotated) StanceAnnotationControls(key: ValueKey(comment.id), comment: comment),
             ],
           ),
         ),

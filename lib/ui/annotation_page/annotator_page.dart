@@ -26,7 +26,9 @@ class AnnotatorPage extends ConsumerWidget {
         actions: [
           Text('${state.annotationCount} / ${state.length}'),
           const SizedBox(width: 16),
-          FilledButton(onPressed: () {}, child: const Text('Next ->')),
+          FilledButton(onPressed: () {
+            ref.read(annotatorPageProvider.notifier).flushCache();
+          }, child: const Text('Next ->')),
           const SizedBox(width: 16),
         ],
         backgroundColor: softBlack,
@@ -34,31 +36,32 @@ class AnnotatorPage extends ConsumerWidget {
       ),
       body: Column(
         children: [
-        const SizedBox(
-        height: 8,
-      ),
-      Expanded(
-        child: Row(
-          children: [
-            Flexible(
-                flex: 1, child: LeftSidebar(submission: state.submission)),
-            const VerticalDivider(
-              color: softBlack,
+          const SizedBox(
+            height: 8,
+          ),
+          Expanded(
+            child: Row(
+              children: [
+                Flexible(
+                    flex: 1, child: LeftSidebar(submission: state.submission)),
+                const VerticalDivider(
+                  color: softBlack,
+                ),
+                Flexible(
+                    flex: 3,
+                    child: CommentView(
+                      key: ObjectKey(state),
+                      commentSets: current,
+                    )),
+                const SizedBox(width: 8),
+              ],
             ),
-            Flexible(
-                flex: 3,
-                child: CommentView(
-                  key: ObjectKey(state),
-                  commentSets: current,
-                )),
-            const SizedBox(width: 8),
-          ],
-        ),),
-        const Divider(
-          color: softBlack,
-          height: 1,
-        ),
-        _ProgressIndicator(state),
+          ),
+          const Divider(
+            color: softBlack,
+            height: 1,
+          ),
+          _ProgressIndicator(state),
         ],
       ),
     );
@@ -81,4 +84,3 @@ class _ProgressIndicator extends ConsumerWidget {
     );
   }
 }
-

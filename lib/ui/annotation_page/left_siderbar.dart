@@ -14,7 +14,8 @@ class LeftSidebar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Expanded(flex: 3, child: SingleChildScrollView(child: _Instructions())),
+        const Expanded(
+            flex: 3, child: SingleChildScrollView(child: _Instructions())),
         const Divider(
           color: softBlack,
         ),

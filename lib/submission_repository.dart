@@ -8,6 +8,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tree_iterator/tree_iterator.dart';
 
+import 'data/annotator_page_state.dart';
 import 'data/comment.dart';
 import 'data/stance_label.dart';
 import 'data/submission.dart';
@@ -34,30 +35,36 @@ class SubmissionRepository {
 
   Submission? get submission => _submission.value;
 
-  Future<void> updateCommentStance(
-      {required String commentId,
-      required StanceLabel stanceLabel,
-      required StanceAnnotationType stanceAnnotationType}) async {
+  Submission _updateCommentStance(
+      Submission originalSubmission, CommentStanceKey key, StanceLabel label) {
     /// Use a local function to process each comment and comply with the interface while still being able to access the commentId and stanceLabel.
     bool updateStance(Comment comment) {
-      if (comment.id != commentId) {
+      if (comment.id != key.commentId) {
         return true;
       }
 
-      if (stanceAnnotationType == StanceAnnotationType.source) {
-        comment.stanceOnSubmission = stanceLabel;
+      if (key.stanceAnnotationType == StanceAnnotationType.source) {
+        comment.stanceOnSubmission = label;
       } else {
-        comment.stanceOnParent = stanceLabel;
+        comment.stanceOnParent = label;
       }
-
+      print("Updated comment ${comment.id}");
       return false;
     }
 
-    final root = submission!;
+    final root = originalSubmission;
     traverseTree<TreeNode>(
         root, (node) => node.nodes, (node) => updateStance(node as Comment));
 
-    submission = root.copyWith();
+    return root;
+  }
+
+  void updateCommentStances(Map<CommentStanceKey, StanceLabel> jobs) {
+    final completelyUpdatedSubmission = jobs.entries.fold(
+        submission!,
+        (previousValue, element) =>
+            _updateCommentStance(previousValue, element.key, element.value));
+    submission = completelyUpdatedSubmission.copyWith();
   }
 
   void dispose() {
