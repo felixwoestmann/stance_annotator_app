@@ -2,48 +2,55 @@ import 'package:annotator_app/colors.dart';
 import 'package:annotator_app/data/comment_set.dart';
 import 'package:annotator_app/data/stance_label.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../data/comment.dart';
 
-class CommentView extends StatefulWidget {
+class CommentView extends StatelessWidget {
   final List<CommentSet> commentSets;
 
   const CommentView({super.key, required this.commentSets});
 
   @override
-  State<CommentView> createState() => _CommentViewState();
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: commentSets.length,
+      itemBuilder: (context, index) {
+        final commentSet = commentSets[index];
+        return switch (commentSet) {
+          TopLevelComment topCommentSet =>
+            TopLevelCommentView(comment: topCommentSet.comment),
+          SubsequentComment subsequentCommentSet => SubsequentCommentView(
+              comment: subsequentCommentSet.comment,
+              parent: subsequentCommentSet.parent),
+        };
+      },
+    );
+  }
 }
 
-class _CommentViewState extends State<CommentView> {
+class TopLevelCommentView extends StatelessWidget {
+  final Comment comment;
 
-  @override
-  void initState() {
-    super.initState();
-    _controller = TreeController<Comment>(
-      childrenProvider: (comment) => comment.branches,
-      roots: widget.commentSets.,
-    )..expandAll();
-  }
+  const TopLevelCommentView({super.key, required this.comment});
 
   @override
   Widget build(BuildContext context) {
-    return TreeView(
-      treeController: _controller,
-      padding: const EdgeInsets.only(top: 8, right: 8),
-      nodeBuilder: (BuildContext context, TreeEntry<Comment> entry) {
-        return TreeIndentation(
-          entry: entry,
-          guide: const IndentGuide.connectingLines(
-            color: softBlack,
-            padding: EdgeInsets.zero,
-          ),
-          child: BranchDisplay(comment: entry.node),
-        );
-      },
-    );
+    return BranchDisplay(comment: comment);
+  }
+}
+
+class SubsequentCommentView extends StatelessWidget {
+  final Comment comment;
+  final Comment parent;
+
+  const SubsequentCommentView(
+      {super.key, required this.comment, required this.parent});
+
+  @override
+  Widget build(BuildContext context) {
+    return BranchDisplay(comment: comment);
   }
 }
 
@@ -131,10 +138,10 @@ class _StanceAnnotationButton extends ConsumerWidget {
           ? comment.stanceOnSubmission.toSet
           : comment.stanceOnParent.toSet,
       onSelectionChanged: (nowSelectedLabels) async {
-        await ref.read(submissionProvider.notifier).updateCommentStance(
-            commentId: comment.id,
-            stanceLabel: nowSelectedLabels.first,
-            stanceAnnotationType: type);
+        // await ref.read(submissionProvider.notifier).updateCommentStance(
+        //     commentId: comment.id,
+        //     stanceLabel: nowSelectedLabels.first,
+        //     stanceAnnotationType: type);
       },
     );
   }

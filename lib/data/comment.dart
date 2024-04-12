@@ -14,16 +14,14 @@ class Comment with _$Comment implements TreeNode {
     required final String body,
     required final List<Comment> branches,
     @Default(false) bool isTopLevel,
-      StanceLabel? stanceOnSubmission,
-      StanceLabel? stanceOnParent,
+    StanceLabel? stanceOnSubmission,
+    StanceLabel? stanceOnParent,
   }) = _Comment;
 
   factory Comment.fromJson(Map<String, Object?> json) =>
       _$CommentFromJson(json);
 
   Comment._();
-
-
 
   @override
   List<TreeNode> get nodes => branches;

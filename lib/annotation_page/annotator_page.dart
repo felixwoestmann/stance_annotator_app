@@ -40,14 +40,17 @@ class AnnotatorPage extends ConsumerWidget {
           Expanded(
             child: Row(
               children: [
-                Flexible(flex: 1, child: LeftSidebar(submission: state.submission)),
+                Flexible(
+                    flex: 1, child: LeftSidebar(submission: state.submission)),
                 const VerticalDivider(
                   color: softBlack,
                 ),
                 Flexible(
                     flex: 3,
                     child: CommentView(
-                        key: ObjectKey(state), comments: current)),
+                      key: ObjectKey(state),
+                      commentSets: current,
+                    )),
               ],
             ),
           ),
@@ -55,7 +58,7 @@ class AnnotatorPage extends ConsumerWidget {
             color: softBlack,
             height: 1,
           ),
-          const _ProgressIndicator(),
+          _ProgressIndicator(state),
         ],
       ),
     );
@@ -63,13 +66,14 @@ class AnnotatorPage extends ConsumerWidget {
 }
 
 class _ProgressIndicator extends ConsumerWidget {
-  const _ProgressIndicator({Key? key}) : super(key: key);
+  const _ProgressIndicator(this.state);
+
+  final AnnotatorPageState state;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final commentSetNotifier = ref.watch(annotatorPageProvider.notifier);
-    final totalLength = commentSetNotifier.length;
-    final annotatedLength = commentSetNotifier.annotationCount;
+    final totalLength = state.length;
+    final annotatedLength = state.annotationCount;
     final relativeProgress = annotatedLength / totalLength;
     return LinearProgressIndicator(
       value: relativeProgress,

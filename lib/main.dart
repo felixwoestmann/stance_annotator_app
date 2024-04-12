@@ -8,7 +8,6 @@ void main() async {
   final getIt = GetIt.instance;
   final prefs = await SharedPreferences.getInstance();
   getIt.registerSingleton<SharedPreferences>(prefs);
-  
-  runApp(const ProviderScope(
-      child: AnnotatorApp()));
+
+  runApp(const ProviderScope(child: AnnotatorApp()));
 }

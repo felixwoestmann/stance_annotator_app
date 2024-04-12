@@ -18,8 +18,8 @@ class UploadSubmissionPage extends ConsumerWidget {
   Future<void> _onSubmissionButtonPressed(BuildContext context) async {
     final navigator = Navigator.of(context);
 
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-        type: FileType.custom, allowedExtensions: ['json']);
+    FilePickerResult? result = await FilePicker.platform
+        .pickFiles(type: FileType.custom, allowedExtensions: ['json']);
 
     if (result != null) {
       final bytes = result.files.single.bytes;
@@ -33,12 +33,10 @@ class UploadSubmissionPage extends ConsumerWidget {
 
       await GetIt.instance.get<SharedPreferences>().saveSubmission(submission);
 
-      navigator.push(MaterialPageRoute(
-          builder: (_) => const AnnotatorPage()));
+      navigator.push(MaterialPageRoute(builder: (_) => const AnnotatorPage()));
     } else {
       await showDialog(
-      context: context,
-      builder: (_) => const Text("Error occured"));
+          context: context, builder: (_) => const Text("Error occured"));
     }
   }
 
@@ -54,7 +52,7 @@ class UploadSubmissionPage extends ConsumerWidget {
       ),
       body: Center(
         child: FilledButton(
-            onPressed: ()=>_onSubmissionButtonPressed(context),
+            onPressed: () => _onSubmissionButtonPressed(context),
             child: const Text('Pick JSON file')),
       ),
       // This trailing comma makes auto-formatting nicer for build methods.

@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'data/comment_set.dart';
 import 'data/submission.dart';
 
 const String _submissionDataKey = 'submissions_data';
@@ -27,4 +26,3 @@ extension HandleSubmission on SharedPreferences {
 
   bool get hasSubmissionData => containsKey(_submissionDataKey);
 }
-

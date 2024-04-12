@@ -9,7 +9,6 @@ import 'package:tree_iterator/tree_iterator.dart';
 
 import 'annotation_page/comment_view.dart';
 import 'data/comment.dart';
-import 'data/comment_set.dart';
 import 'data/stance_label.dart';
 import 'data/submission.dart';
 import 'data/tree_interface.dart';

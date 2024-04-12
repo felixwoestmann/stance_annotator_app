@@ -16,7 +16,6 @@ final annotatorPageProvider =
   AnnotatorPageProvider.new,
 );
 
-
 class AnnotatorPageProvider extends AutoDisposeNotifier<AnnotatorPageState> {
   @override
   AnnotatorPageState build() {
@@ -43,8 +42,6 @@ class AnnotatorPageProvider extends AutoDisposeNotifier<AnnotatorPageState> {
   }
 
   int get annotationCount => state.annotationCount;
-
-
 }
 
 extension on Submission {
