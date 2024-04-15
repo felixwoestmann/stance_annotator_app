@@ -27,6 +27,7 @@ sealed class CommentSet with _$CommentSet {
     }
   }
 
+  @override
   Comment get comment => when(
         topLevel: (comment) => comment,
         subsequent: (comment, _) => comment,

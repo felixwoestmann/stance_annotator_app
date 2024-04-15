@@ -1,6 +1,6 @@
+import 'package:annotator_app/data/stance_annotation_type.dart';
 import 'package:annotator_app/data/stance_label.dart';
 import 'package:annotator_app/data/submission.dart';
-import 'package:annotator_app/ui/annotation_page/stance_annotation_button.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'comment_set.dart';

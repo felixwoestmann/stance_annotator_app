@@ -41,9 +41,19 @@ class _Instructions extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           Text(
-            "Read the article and annotate the comments on the right according to their stance regarding the topic: Bahnstreiks. Therefore are people in favor of the Railworkers striking or against it or neither.",
+            "Read the article and annotate the comments on the right according to their stance regarding the topic.",
             style: GoogleFonts.roboto(fontSize: 16),
           ),
+          const SizedBox(height: 10),
+          Text(
+            'Topic:',
+            style: GoogleFonts.roboto(fontSize: 16,fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            'Railstrikes. Are the comments in Favor of the strikes against them or neither?',
+            style: GoogleFonts.roboto(fontSize: 16),
+          )
         ],
       ),
     );

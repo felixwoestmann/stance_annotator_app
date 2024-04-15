@@ -1,0 +1,1 @@
+enum StanceAnnotationType { source, parent }

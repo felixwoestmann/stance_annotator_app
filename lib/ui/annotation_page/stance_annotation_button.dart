@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../data/comment.dart';
+import '../../data/stance_annotation_type.dart';
 import '../../data/stance_label.dart';
 
 class StanceAnnotationControls extends StatelessWidget {
@@ -21,12 +22,12 @@ class StanceAnnotationControls extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text('Comments stance on the topic: ', style: textStyle),
+        Text('Stance on the topic: ', style: textStyle),
         _StanceAnnotationButton(
             comment: comment, type: StanceAnnotationType.source),
         if (!comment.isTopLevel) ...[
           const SizedBox(height: 8),
-          Text('Comments stance on the parent: ', style: textStyle),
+          Text('Stance on the parent: ', style: textStyle),
           _StanceAnnotationButton(
               comment: comment, type: StanceAnnotationType.parent)
         ],
@@ -70,19 +71,18 @@ class _StanceAnnotationButtonState
       multiSelectionEnabled: false,
       segments: [
         ButtonSegment(
-            value: StanceLabel.agrees,
-            label: Text(StanceLabel.agrees.toDisplayString())),
+            value: StanceLabel.positive,
+            label: Text(StanceLabel.positive.toDisplayString(widget.type))),
         ButtonSegment(
-            value: StanceLabel.disagrees,
-            label: Text(StanceLabel.disagrees.toDisplayString())),
+            value: StanceLabel.negative,
+            label: Text(StanceLabel.negative.toDisplayString(widget.type))),
         ButtonSegment(
             value: StanceLabel.neither,
-            label: Text(StanceLabel.neither.toDisplayString())),
+            label: Text(StanceLabel.neither.toDisplayString(widget.type))),
       ],
       selected: selected,
       showSelectedIcon: false,
       onSelectionChanged: (nowSelectedLabels) async {
-        print('Was: $selected, now: $nowSelectedLabels');
         setState(() {
           ref.read(annotatorPageProvider.notifier).addToCache(
             key: (
@@ -98,7 +98,6 @@ class _StanceAnnotationButtonState
   }
 }
 
-enum StanceAnnotationType { source, parent }
 
 extension on StanceLabel? {
   Set<StanceLabel> get toSet => this == null ? {} : {this!};

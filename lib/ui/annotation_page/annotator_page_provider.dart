@@ -5,10 +5,10 @@ import 'package:annotator_app/data/comment.dart';
 import 'package:annotator_app/data/comment_set.dart';
 import 'package:annotator_app/submission_repository.dart';
 import 'package:annotator_app/tree_helper.dart';
-import 'package:annotator_app/ui/annotation_page/stance_annotation_button.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../data/stance_annotation_type.dart';
 import '../../data/stance_label.dart';
 import '../../data/submission.dart';
 import '../../data/tree_interface.dart';
@@ -46,7 +46,7 @@ class AnnotatorPageProvider extends AutoDisposeNotifier<AnnotatorPageState> {
     if (submission == null) {
       return;
     }
-    state = AnnotationPageStateExtension.fromSubmission(submission!);
+    state = AnnotationPageStateExtension.fromSubmission(submission);
   }
 
   int get annotationCount => state.annotationCount;

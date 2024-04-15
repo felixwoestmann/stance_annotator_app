@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:annotator_app/shared_preferences_extension.dart';
-import 'package:annotator_app/ui/annotation_page/stance_annotation_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:rxdart/rxdart.dart';
@@ -10,6 +9,7 @@ import 'package:tree_iterator/tree_iterator.dart';
 
 import 'data/annotator_page_state.dart';
 import 'data/comment.dart';
+import 'data/stance_annotation_type.dart';
 import 'data/stance_label.dart';
 import 'data/submission.dart';
 import 'data/tree_interface.dart';

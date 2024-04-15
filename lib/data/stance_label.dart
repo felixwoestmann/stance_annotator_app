@@ -1,23 +1,29 @@
+import 'package:annotator_app/data/stance_annotation_type.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 @JsonEnum(valueField: 'value')
 enum StanceLabel {
-  agrees('agrees'),
-  disagrees('disagrees'),
+  positive('agrees'),
+  negative('disagrees'),
   neither('neither');
 
   final String value;
 
   const StanceLabel(this.value);
 
-  String toDisplayString() {
-    switch (this) {
-      case StanceLabel.agrees:
-        return '👍 Agrees';
-      case StanceLabel.disagrees:
-        return '👎 Disagrees';
-      case StanceLabel.neither:
-        return 'Neither';
+  String toDisplayString(StanceAnnotationType type) {
+    if (type == StanceAnnotationType.source) {
+      return switch (this) {
+        StanceLabel.positive => 'In Favor',
+        StanceLabel.negative => '  Against  ',
+        StanceLabel.neither => 'Neither',
+      };
+    } else {
+      return switch (this) {
+        StanceLabel.positive => 'Agrees',
+        StanceLabel.negative => 'Disagrees',
+        StanceLabel.neither => 'Neither',
+      };
     }
   }
 }
