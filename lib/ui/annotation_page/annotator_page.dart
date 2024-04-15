@@ -33,6 +33,7 @@ class AnnotatorPage extends ConsumerWidget {
               notifier.reset();
             },
           ),
+          const SizedBox(width: 16),
           FilledButton(
               onPressed: () {
                 final submissionAsJsonString =
