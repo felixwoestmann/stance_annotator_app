@@ -13,6 +13,7 @@ import 'data/comment.dart';
 import 'data/stance_label.dart';
 import 'data/submission.dart';
 import 'data/tree_interface.dart';
+import 'dart:html' as html;
 
 final submissionRepositoryProvider =
     Provider<SubmissionRepository>((ref) => SubmissionRepository());
@@ -31,6 +32,11 @@ class SubmissionRepository {
 
   set submission(Submission? submission) {
     _submission.value = submission;
+    if (submission == null) {
+      Future.microtask(() {
+        html.window.location.reload();
+      });
+    }
   }
 
   Submission? get submission => _submission.value;

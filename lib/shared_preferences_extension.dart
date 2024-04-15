@@ -10,9 +10,8 @@ extension HandleSubmission on SharedPreferences {
   Future<void> saveSubmission(Submission? submission) {
     print("Saving submission update to LocalStorage");
     if (submission == null) {
-      return Future.value();
+      return remove(_submissionDataKey);
     }
-
     return setString(_submissionDataKey, jsonEncode(submission.toJson()));
   }
 

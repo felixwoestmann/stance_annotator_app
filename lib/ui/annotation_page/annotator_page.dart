@@ -6,7 +6,6 @@ import 'package:annotator_app/ui/annotation_page/annotator_page_provider.dart';
 import 'package:annotator_app/data/annotator_page_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import 'comment_view.dart';
 import 'left_siderbar.dart';
@@ -29,6 +28,12 @@ class AnnotatorPage extends ConsumerWidget {
         automaticallyImplyLeading: false,
         actions: [
           FilledButton(
+            child: const Text('Reset'),
+            onPressed: () {
+              notifier.reset();
+            },
+          ),
+          FilledButton(
               onPressed: () {
                 final submissionAsJsonString =
                     jsonEncode(state.submission.toJson());
@@ -49,7 +54,7 @@ class AnnotatorPage extends ConsumerWidget {
           Text('${notifier.currentPage} / ${notifier.totalPageCount}'),
           const SizedBox(width: 16),
           FilledButton(
-              onPressed: notifier.isPageCompletelyAnnotated
+              onPressed: notifier.isPageCompletelyAnnotated && current.isNotEmpty
                   ? notifier.flushCache
                   : null,
               child: const Row(
@@ -77,7 +82,13 @@ class AnnotatorPage extends ConsumerWidget {
                 const VerticalDivider(
                   color: softBlack,
                 ),
-                Flexible(flex: 3, child: CommentView(commentSets: current)),
+                Flexible( flex: 3,
+                  child: current.isNotEmpty
+                      ? CommentView(commentSets: current)
+                      : const Center(
+                          child: Text(
+                              "Everything is annotated. Download the file on the Export button.",style: TextStyle(fontSize: 20),)),
+                ),
                 const SizedBox(width: 8),
               ],
             ),

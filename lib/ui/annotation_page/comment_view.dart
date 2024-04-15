@@ -16,7 +16,7 @@ class CommentView extends StatefulWidget {
 }
 
 class _CommentViewState extends State<CommentView> {
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {

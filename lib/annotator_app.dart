@@ -16,7 +16,7 @@ class AnnotatorApp extends ConsumerWidget {
     Widget home;
     if (prefs.hasSubmissionData) {
       final submission = prefs.loadSubmission();
-      ref.read(submissionRepositoryProvider).submission = submission;
+      ref.watch(submissionRepositoryProvider).submission = submission;
       home = const AnnotatorPage();
     } else {
       home = const UploadSubmissionPage();

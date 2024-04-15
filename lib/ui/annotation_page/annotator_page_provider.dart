@@ -43,6 +43,9 @@ class AnnotatorPageProvider extends AutoDisposeNotifier<AnnotatorPageState> {
 
   void _onSubmissionChange(Submission? submission) {
     print('Updating state with new submission');
+    if (submission == null) {
+      return;
+    }
     state = AnnotationPageStateExtension.fromSubmission(submission!);
   }
 
@@ -54,6 +57,10 @@ class AnnotatorPageProvider extends AutoDisposeNotifier<AnnotatorPageState> {
 
   List<CommentSet> get current {
     return state.unannotatedComments.take(setsPerPage).toList();
+  }
+
+  void reset() {
+    _submissionRepository.submission = null;
   }
 
   bool get isPageCompletelyAnnotated {
