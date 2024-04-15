@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:html';
 
 import 'package:annotator_app/colors.dart';
 import 'package:annotator_app/ui/annotation_page/annotator_page_provider.dart';
@@ -31,8 +32,11 @@ class AnnotatorPage extends ConsumerWidget {
               onPressed: () {
                 final submissionAsJsonString =
                     jsonEncode(state.submission.toJson());
-                launchUrl(Uri.parse(
-                    "data:application/octet-stream;base64,${base64Encode(utf8.encode(submissionAsJsonString))}"));
+                AnchorElement(
+                    href:
+                        "data:application/octet-stream;charset=utf-16le;base64,${base64Encode(utf8.encode(submissionAsJsonString))}")
+                  ..download = "annotated_${state.submission.id}.json"
+                  ..click();
               },
               child: const Row(
                 children: [
