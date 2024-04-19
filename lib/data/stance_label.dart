@@ -3,8 +3,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 @JsonEnum(valueField: 'value')
 enum StanceLabel {
-  positive('agrees'),
-  negative('disagrees'),
+  positive('positive'),
+  negative('negative'),
   neither('neither');
 
   final String value;
