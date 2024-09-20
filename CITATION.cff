@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Felix"
+  given-names: "Wöstmann"
+  orcid: "https://orcid.org/0009-0006-7577-4993"
+title: "Reddit comments stance annotator app"
+version: 1.0.0
+doi: 10.5281/zenodo.13819363
+date-released: 2024-09-20
+url: "https://github.com/felixwoestmann/stance_annotator_app"
